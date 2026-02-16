@@ -1,0 +1,68 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div class="text-center">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Reactive Form POC</h2>
+        <p class="mb-6 text-gray-600">Click the button below to open the registration form.</p>
+        <p-button label="Open Registration Form" icon="pi pi-user-plus" (click)="visible = true"></p-button>
+    </div>
+
+    <p-drawer [(visible)]="visible" position="right" [style]="{width: '400px'}" header="Sign Up">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-2">
+
+            <!-- Role -->
+            <div class="form-field">
+                <label for="role" class="form-label">Role <span class="text-red-500">*</span></label>
+                <p-select [options]="roles" formControlName="role" optionLabel="name" placeholder="Select a Role"
+                    [style]="{'width':'100%'}"
+                    [ngClass]="{'ng-invalid ng-dirty': role?.invalid && role?.touched}"></p-select>
+                <small *ngIf="role?.invalid && role?.touched" class="form-error">
+                    Role is required.
+                </small>
+            </div>
+
+            <!-- First Name -->
+            <div class="form-field">
+                <label for="firstName" class="form-label">First Name <span class="text-red-500">*</span></label>
+                <input pInputText id="firstName" formControlName="firstName" placeholder="Enter your first name"
+                    class="form-input" [ngClass]="{'ng-invalid ng-dirty': firstName?.invalid && firstName?.touched}" />
+                <small *ngIf="firstName?.invalid && firstName?.touched" class="form-error">
+                    First Name is required.
+                </small>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-field">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input pInputText id="lastName" formControlName="lastName" placeholder="Enter your last name"
+                    class="form-input" />
+            </div>
+
+            <!-- Email -->
+            <div class="form-field">
+                <label for="email" class="form-label">Email <span class="text-red-500">*</span></label>
+                <input pInputText id="email" formControlName="email" placeholder="Enter your email" class="form-input"
+                    [ngClass]="{'ng-invalid ng-dirty': email?.invalid && email?.touched}" />
+                <div *ngIf="email?.invalid && email?.touched" class="form-error">
+                    <small *ngIf="email?.errors?.['required']">Email is required.</small>
+                    <small *ngIf="email?.errors?.['email']">Enter a valid email address.</small>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-field">
+                <label for="password" class="form-label">Password <span class="text-red-500">*</span></label>
+                <p-password id="password" formControlName="password" [feedback]="false"
+                    placeholder="Enter your password" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': password?.invalid && password?.touched}"></p-password>
+                <small *ngIf="password?.invalid && password?.touched" class="form-error">
+                    Password is required.
+                </small>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <p-button label="Submit" type="submit" [disabled]="userForm.invalid"></p-button>
+            </div>
+
+        </form>
+    </p-drawer>
+</div>
