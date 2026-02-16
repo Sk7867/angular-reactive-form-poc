@@ -10,6 +10,7 @@ export interface FormFieldConfig {
     optionLabel?: string; // Property to display for options
     validators?: any[];
     defaultValue?: any;
+    groupName?: string; // Optional group name for organizing fields
 }
 
 export const FORM_FIELDS: FormFieldConfig[] = [
@@ -73,5 +74,26 @@ export const FORM_FIELDS: FormFieldConfig[] = [
         ],
         optionLabel: 'name',
         validators: [Validators.required]
+    }
+];
+
+export const AZURE_FIELDS: FormFieldConfig[] = [
+    {
+        key: 'azureId',
+        label: 'Id',
+        type: 'text',
+        required: true,
+        placeholder: 'Enter Azure Id',
+        validators: [Validators.required],
+        groupName: 'Connection 1'
+    },
+    {
+        key: 'azureKey',
+        label: 'Key',
+        type: 'text',
+        required: true,
+        placeholder: 'Enter Azure Key',
+        validators: [Validators.required],
+        groupName: 'Connection 1'
     }
 ];
