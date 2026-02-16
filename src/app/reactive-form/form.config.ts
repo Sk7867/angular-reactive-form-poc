@@ -58,5 +58,20 @@ export const FORM_FIELDS: FormFieldConfig[] = [
         required: true,
         placeholder: 'Enter your password',
         validators: [Validators.required]
+    },
+    {
+        key: 'process',
+        label: 'Process',
+        type: 'select',
+        required: true,
+        placeholder: 'Select a Process',
+        options: [
+            { name: 'None', code: 'None' },
+            { name: 'Azure', code: 'Azure' },
+            { name: 'AWS', code: 'AWS' },
+            { name: 'GCP', code: 'GCP' }
+        ],
+        optionLabel: 'name',
+        validators: [Validators.required]
     }
 ];

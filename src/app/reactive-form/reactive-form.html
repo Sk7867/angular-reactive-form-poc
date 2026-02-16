@@ -8,55 +8,46 @@
     <p-drawer [(visible)]="visible" position="right" [style]="{width: '400px'}" header="Sign Up">
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="mt-2">
 
-            <!-- Role -->
+            @for (field of formFields; track field.key) {
             <div class="form-field">
-                <label for="role" class="form-label">Role <span class="text-red-500">*</span></label>
-                <p-select [options]="roles" formControlName="role" optionLabel="name" placeholder="Select a Role"
+                <label [for]="field.key" class="form-label">
+                    {{ field.label }}
+                    @if (field.required) { <span class="text-red-500">*</span> }
+                </label>
+
+                @switch (field.type) {
+                @case ('select') {
+                <p-select [options]="field.options" [formControlName]="field.key"
+                    [optionLabel]="field.optionLabel || 'name'" [placeholder]="field.placeholder"
                     [style]="{'width':'100%'}"
-                    [ngClass]="{'ng-invalid ng-dirty': role?.invalid && role?.touched}"></p-select>
-                <small *ngIf="role?.invalid && role?.touched" class="form-error">
-                    Role is required.
-                </small>
-            </div>
+                    [ngClass]="{'ng-invalid ng-dirty': userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched}">
+                </p-select>
+                }
+                @case ('password') {
+                <p-password [id]="field.key" [formControlName]="field.key" [feedback]="false"
+                    [placeholder]="field.placeholder" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"
+                    [ngClass]="{'ng-invalid ng-dirty': userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched}">
+                </p-password>
+                }
+                @default {
+                <input pInputText [id]="field.key" [formControlName]="field.key" [placeholder]="field.placeholder"
+                    class="form-input"
+                    [ngClass]="{'ng-invalid ng-dirty': userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched}" />
+                }
+                }
 
-            <!-- First Name -->
-            <div class="form-field">
-                <label for="firstName" class="form-label">First Name <span class="text-red-500">*</span></label>
-                <input pInputText id="firstName" formControlName="firstName" placeholder="Enter your first name"
-                    class="form-input" [ngClass]="{'ng-invalid ng-dirty': firstName?.invalid && firstName?.touched}" />
-                <small *ngIf="firstName?.invalid && firstName?.touched" class="form-error">
-                    First Name is required.
-                </small>
-            </div>
-
-            <!-- Last Name -->
-            <div class="form-field">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input pInputText id="lastName" formControlName="lastName" placeholder="Enter your last name"
-                    class="form-input" />
-            </div>
-
-            <!-- Email -->
-            <div class="form-field">
-                <label for="email" class="form-label">Email <span class="text-red-500">*</span></label>
-                <input pInputText id="email" formControlName="email" placeholder="Enter your email" class="form-input"
-                    [ngClass]="{'ng-invalid ng-dirty': email?.invalid && email?.touched}" />
-                <div *ngIf="email?.invalid && email?.touched" class="form-error">
-                    <small *ngIf="email?.errors?.['required']">Email is required.</small>
-                    <small *ngIf="email?.errors?.['email']">Enter a valid email address.</small>
+                @if (userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched) {
+                <div class="form-error">
+                    @if (userForm.get(field.key)?.errors?.['required']) {
+                    <small>{{ field.label }} is required.</small>
+                    }
+                    @if (userForm.get(field.key)?.errors?.['email']) {
+                    <small>Enter a valid email address.</small>
+                    }
                 </div>
+                }
             </div>
-
-            <!-- Password -->
-            <div class="form-field">
-                <label for="password" class="form-label">Password <span class="text-red-500">*</span></label>
-                <p-password id="password" formControlName="password" [feedback]="false"
-                    placeholder="Enter your password" [toggleMask]="true" styleClass="w-full" inputStyleClass="w-full"
-                    [ngClass]="{'ng-invalid ng-dirty': password?.invalid && password?.touched}"></p-password>
-                <small *ngIf="password?.invalid && password?.touched" class="form-error">
-                    Password is required.
-                </small>
-            </div>
+            }
 
             <!-- Submit Button -->
             <div class="form-actions">

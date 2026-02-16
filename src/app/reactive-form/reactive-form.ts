@@ -8,6 +8,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { DrawerModule } from 'primeng/drawer';
 import { SelectModule } from 'primeng/select';
 
+import { FORM_FIELDS } from './form.config';
+
 @Component({
   selector: 'app-reactive-form',
   standalone: true,
@@ -27,15 +29,12 @@ import { SelectModule } from 'primeng/select';
 export class ReactiveForm {
   userForm: FormGroup;
   visible: boolean = false;
-  roles: any[] = [
-    { name: 'Admin', code: 'Admin' },
-    { name: 'Business', code: 'Business' },
-    { name: 'User', code: 'User' }
-  ];
+  formFields = FORM_FIELDS;
 
   constructor(private fb: FormBuilder) {
     this.userForm = this.fb.group({
       role: [{ name: 'User', code: 'User' }, Validators.required],
+      process: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: [''],
       email: ['', [Validators.required, Validators.email]],
